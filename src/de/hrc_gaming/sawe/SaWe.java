@@ -1,6 +1,5 @@
-package com.Postremus.sawe;
+package de.hrc_gaming.sawe;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
