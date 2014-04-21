@@ -97,18 +97,32 @@ public class RegionListener implements Listener {
 	private void changeMask(Player player, Location to)
 	{
 		WorldEditPlugin we = this.plugin.getWorldEdit();
-		if (player.hasPermission("sawe.bypass") || !player.hasPermission("sawe.use"))
+		if (player.hasPermission("sawe.bypass"))
 		{
 			we.getSession(player).setMask(null);
 			return;
 		}
-		ProtectedRegion own = getOwnRegionAt(player.getName(), to);
-		if (own == null)
+		ProtectedRegion rg = getRegionAt(to);
+		if (rg == null)
 		{
 			return;
 		}
-		RegionMask rm = this.getRegionMask(own, to.getWorld());	
-		we.getSession(player).setMask(rm);
+		we.getSession(player).setMask(null);
+		boolean allowWorldEdit = false;
+		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member"))
+		{
+			allowWorldEdit = true;
+		}
+		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner"))
+		{
+			allowWorldEdit = true;
+		}
+		
+		if (allowWorldEdit)
+		{
+			RegionMask rm = this.getRegionMask(rg);	
+			we.getSession(player).setMask(rm);
+		}
 	}
 	
 	private boolean isWorldEditCommand(String command)
@@ -122,21 +136,18 @@ public class RegionListener implements Listener {
 		return weCommands.containsKey(command);
 	}
 	
-	private ProtectedRegion getOwnRegionAt(String playerName, Location loc)
+	private ProtectedRegion getRegionAt(Location loc)
 	{
 		RegionManager rm = this.plugin.getWorldGuard().getRegionManager(loc.getWorld());
 		ApplicableRegionSet set = rm.getApplicableRegions(loc);
-		for (ProtectedRegion rg : set)
+		if (set.size() > 0)
 		{
-			if (rg.getOwners().contains(playerName))
-			{
-				return rg;
-			}
+			return set.iterator().next();
 		}
 		return null;
 	}
 	
-	private RegionMask getRegionMask(ProtectedRegion rg, World w)
+	private RegionMask getRegionMask(ProtectedRegion rg)
 	{
 		CuboidRegion cr = new CuboidRegion(rg.getMinimumPoint(), rg.getMaximumPoint());
 		return new RegionMask(cr);
