@@ -109,10 +109,6 @@ public class RegionListener implements Listener {
 		}
 		we.getSession(player).setMask(null);
 		boolean allowWorldEdit = false;
-<<<<<<< HEAD
-=======
-		player.sendMessage("id: "+rg.getId());
->>>>>>> d963a64a330a53fb111be604685714a03f885ff7
 		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member"))
 		{
 			allowWorldEdit = true;
