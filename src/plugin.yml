@@ -1,8 +1,8 @@
 name: SaWe
-version: 0.0.2
+version: 0.0.2.1
 description: Worldedit in eigenen Worldguard Regionen nutzen
 website: 
 author: postremus
-main: com.Postremus.sawe.SaWe
+main: de.hrc_gaming.sawe.SaWe
 depend: [WorldEdit, WorldGuard]
   
