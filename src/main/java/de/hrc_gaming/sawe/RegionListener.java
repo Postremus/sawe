@@ -75,7 +75,7 @@ public class RegionListener implements Listener {
 			return;
 		}
 		Player p = event.getPlayer();
-		if (p.hasPermission("sawe.bypass"))
+		if (p.hasPermission("sawe.bypass."+p.getWorld().getName().toLowerCase()))
 		{
 			return;
 		}
@@ -89,7 +89,7 @@ public class RegionListener implements Listener {
 	private void changeMask(Player player, Location to)
 	{
 		WorldEditPlugin we = this.plugin.getWorldEdit();
-		if (player.hasPermission("sawe.bypass"))
+		if (player.hasPermission("sawe.bypass."+player.getWorld().getName().toLowerCase()))
 		{
 			we.getSession(player).setMask(null);
 			return;
@@ -101,11 +101,11 @@ public class RegionListener implements Listener {
 		}
 		we.getSession(player).setMask(null);
 		boolean allowWorldEdit = false;
-		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member"))
+		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use."+player.getWorld().getName().toLowerCase()+".member"))
 		{
 			allowWorldEdit = true;
 		}
-		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner"))
+		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use."+player.getWorld().getName().toLowerCase()+".owner"))
 		{
 			allowWorldEdit = true;
 		}
