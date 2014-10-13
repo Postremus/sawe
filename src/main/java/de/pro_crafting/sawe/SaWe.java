@@ -1,4 +1,4 @@
-package de.hrc_gaming.sawe;
+package de.pro_crafting.sawe;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

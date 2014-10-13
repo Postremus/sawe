@@ -1,4 +1,4 @@
-package de.hrc_gaming.sawe;
+package de.pro_crafting.sawe;
 
 import java.util.Map;
 

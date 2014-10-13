@@ -5,3 +5,7 @@
 *.war
 *.ear
 target/
+dependency-reduced-pom.xml
+.settings/
+.project
+.classpath
