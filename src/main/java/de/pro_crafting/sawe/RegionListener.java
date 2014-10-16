@@ -101,11 +101,11 @@ public class RegionListener implements Listener {
 		}
 		we.getSession(player).setMask(null);
 		boolean allowWorldEdit = false;
-		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use."+player.getWorld().getName().toLowerCase()+".member"))
+		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member."+player.getWorld().getName().toLowerCase()))
 		{
 			allowWorldEdit = true;
 		}
-		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use."+player.getWorld().getName().toLowerCase()+".owner"))
+		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner."+player.getWorld().getName().toLowerCase()))
 		{
 			allowWorldEdit = true;
 		}
