@@ -13,7 +13,7 @@ public class SaWe extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		regioListener = new RegionListener(this);
-		this.getLogger().info("sagt Hallo");
+		this.getLogger().info("sagt Hallo");		
 	}
 	
 	@Override
@@ -34,6 +34,6 @@ public class SaWe extends JavaPlugin{
 	
 	public void sendMessage(Player player, String message)
 	{
-		player.sendMessage("งa[SaWe]ง7"+message);
+		player.sendMessage("ยงa[SaWe]ยง7"+message);
 	}
 }
