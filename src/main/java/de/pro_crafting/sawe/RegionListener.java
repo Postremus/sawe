@@ -23,19 +23,16 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 public class RegionListener implements Listener {
 	private SaWe plugin;
 	
-	public RegionListener(SaWe plugin)
-	{
+	public RegionListener(SaWe plugin) {
 		this.plugin = plugin;
 		this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
-	private void playerMoveHandler(PlayerMoveEvent event)
-	{
+	private void playerMoveHandler(PlayerMoveEvent event) {
 		if (event.getTo().getBlockX() == event.getFrom().getBlockX() &&
 				event.getTo().getBlockY() == event.getFrom().getBlockY() &&
-				event.getTo().getBlockZ() == event.getFrom().getBlockZ())
-		{
+				event.getTo().getBlockZ() == event.getFrom().getBlockZ()) {
 			return;
 		}
 		
@@ -44,83 +41,69 @@ public class RegionListener implements Listener {
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
-	public void playerJoinHandler(PlayerJoinEvent event)
-	{
+	public void playerJoinHandler(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
 		changeMask(p, p.getLocation());
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
-	public void playerTeleportHandler(PlayerTeleportEvent event)
-	{
+	public void playerTeleportHandler(PlayerTeleportEvent event) {
 		Player p = event.getPlayer();
 		changeMask(p, event.getTo());
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
-	public void playerRespawnHandler(PlayerRespawnEvent event)
-	{
+	public void playerRespawnHandler(PlayerRespawnEvent event) {
 		Player p = event.getPlayer();
 		changeMask(p, event.getRespawnLocation());
 	}
 	
 	
 	@EventHandler (priority = EventPriority.LOWEST, ignoreCancelled=true)
-	public void playerCommandHandler(PlayerCommandPreprocessEvent event)
-	{
+	public void playerCommandHandler(PlayerCommandPreprocessEvent event) {
 		WorldEditPlugin we = this.plugin.getWorldEdit();
 		String command = event.getMessage().split(" ")[0];
-		if (!isWorldEditCommand(command))
-		{
+		if (!isWorldEditCommand(command)) {
 			return;
 		}
 		Player p = event.getPlayer();
-		if (p.hasPermission("sawe.bypass."+p.getWorld().getName().toLowerCase()))
-		{
+		if (p.hasPermission("sawe.bypass."+p.getWorld().getName().toLowerCase())) {
 			return;
 		}
-		if (we.getSession(p).getMask() == null)
-		{
+		if (we.getSession(p).getMask() == null) {
 			this.plugin.sendMessage(p, "Du darfst hier kein Worldedit benutzen.");
 			event.setCancelled(true);
 		}
 	}
 	
-	private void changeMask(Player player, Location to)
-	{
+	private void changeMask(Player player, Location to) {
 		WorldEditPlugin we = this.plugin.getWorldEdit();
-		if (player.hasPermission("sawe.bypass."+player.getWorld().getName().toLowerCase()))
-		{
+		String worldName = player.getWorld().getName().toLowerCase();
+		if (player.hasPermission("sawe.bypass."+worldName)) {
 			we.getSession(player).setMask(null);
 			return;
 		}
 		ProtectedRegion rg = getRegionAt(to);
-		if (rg == null)
-		{
+		if (rg == null) {
 			return;
 		}
 		we.getSession(player).setMask(null);
 		boolean allowWorldEdit = false;
-		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member."+player.getWorld().getName().toLowerCase()))
-		{
+		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member."+worldName)) {
 			allowWorldEdit = true;
 		}
-		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner."+player.getWorld().getName().toLowerCase()))
-		{
+		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner."+worldName)) {
 			allowWorldEdit = true;
 		}
 		
-		if (allowWorldEdit)
-		{
+		if (allowWorldEdit) {
 			RegionMask rm = this.getRegionMask(rg);	
 			we.getSession(player).setMask(rm);
 		}
 	}
 	
-	private boolean isWorldEditCommand(String command)
-	{
-		if (command.startsWith("/"))
-		{
+	private boolean isWorldEditCommand(String command) {
+		if (command.startsWith("/")) {
 			command = command.replaceFirst("/", "");
 		}
 		command = command.toLowerCase();
@@ -128,19 +111,16 @@ public class RegionListener implements Listener {
 		return weCommands.containsKey(command);
 	}
 	
-	private ProtectedRegion getRegionAt(Location loc)
-	{
+	private ProtectedRegion getRegionAt(Location loc) {
 		RegionManager rm = this.plugin.getWorldGuard().getRegionManager(loc.getWorld());
 		ApplicableRegionSet set = rm.getApplicableRegions(loc);
-		if (set.size() > 0)
-		{
+		if (set.size() > 0) {
 			return set.iterator().next();
 		}
 		return null;
 	}
 	
-	private RegionMask getRegionMask(ProtectedRegion rg)
-	{
+	private RegionMask getRegionMask(ProtectedRegion rg) {
 		CuboidRegion cr = new CuboidRegion(rg.getMinimumPoint(), rg.getMaximumPoint());
 		return new RegionMask(cr);
 	}

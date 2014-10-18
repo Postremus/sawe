@@ -17,8 +17,7 @@ public class SaWe extends JavaPlugin{
 	}
 	
 	@Override
-	public void onDisable()
-	{
+	public void onDisable() {
 		HandlerList.unregisterAll(regioListener);
 		this.getLogger().info("sagt Bis Bald");
 	}
@@ -27,13 +26,11 @@ public class SaWe extends JavaPlugin{
 	    return (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
 	}
 	
-	public WorldEditPlugin getWorldEdit()
-	{
+	public WorldEditPlugin getWorldEdit() {
 	    return (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
 	}
 	
-	public void sendMessage(Player player, String message)
-	{
+    public void sendMessage(Player player, String message) {
 		player.sendMessage("§a[SaWe]§7"+message);
 	}
 }
