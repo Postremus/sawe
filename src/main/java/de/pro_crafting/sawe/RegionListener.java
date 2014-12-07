@@ -1,7 +1,5 @@
 package de.pro_crafting.sawe;
 
-import java.util.Map;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +12,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.masks.Mask;
 import com.sk89q.worldedit.masks.RegionMask;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -39,7 +38,7 @@ public class RegionListener implements Listener {
 		Player p = event.getPlayer();
 		changeMask(p, event.getTo());
 	}
-	
+			
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
 	public void playerJoinHandler(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
@@ -80,14 +79,14 @@ public class RegionListener implements Listener {
 		WorldEditPlugin we = this.plugin.getWorldEdit();
 		String worldName = player.getWorld().getName().toLowerCase();
 		if (player.hasPermission("sawe.bypass."+worldName)) {
-			we.getSession(player).setMask(null);
+			we.getSession(player).setMask((Mask)null);
 			return;
 		}
 		ProtectedRegion rg = getRegionAt(to);
 		if (rg == null) {
 			return;
 		}
-		we.getSession(player).setMask(null);
+		we.getSession(player).setMask((Mask)null);
 		boolean allowWorldEdit = false;
 		if (rg.getMembers().contains(player.getName()) && player.hasPermission("sawe.use.member."+worldName)) {
 			allowWorldEdit = true;
@@ -107,8 +106,7 @@ public class RegionListener implements Listener {
 			command = command.replaceFirst("/", "");
 		}
 		command = command.toLowerCase();
-		Map<String, String> weCommands = this.plugin.getWorldEdit().getWorldEdit().getCommandsManager().getCommands();
-		return weCommands.containsKey(command);
+		return this.plugin.getWorldEdit().getCommand(command) != null;
 	}
 	
 	private ProtectedRegion getRegionAt(Location loc) {
