@@ -12,11 +12,12 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.masks.Mask;
-import com.sk89q.worldedit.masks.RegionMask;
+import com.sk89q.worldedit.function.mask.Mask;
+import com.sk89q.worldedit.function.mask.RegionMask;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldguard.bukkit.BukkitUtil;
+import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class RegionListener implements Listener {
@@ -94,7 +95,6 @@ public class RegionListener implements Listener {
 		else if (rg.getOwners().contains(player.getName()) && player.hasPermission("sawe.use.owner."+worldName)) {
 			allowWorldEdit = true;
 		}
-		
 		if (allowWorldEdit) {
 			RegionMask rm = this.getRegionMask(rg);	
 			we.getSession(player).setMask(rm);
@@ -106,12 +106,12 @@ public class RegionListener implements Listener {
 			command = command.replaceFirst("/", "");
 		}
 		command = command.toLowerCase();
-		return this.plugin.getWorldEdit().getCommand(command) != null;
+		return this.plugin.getWorldEdit().getWorldEdit().getPlatformManager().getCommandManager().getDispatcher().get(command) != null;
 	}
 	
 	private ProtectedRegion getRegionAt(Location loc) {
-		RegionManager rm = this.plugin.getWorldGuard().getRegionManager(loc.getWorld());
-		ApplicableRegionSet set = rm.getApplicableRegions(loc);
+		RegionContainer rm = this.plugin.getWorldGuard().getRegionContainer();
+		ApplicableRegionSet set = rm.get(loc.getWorld()).getApplicableRegions(BukkitUtil.toVector(loc));
 		if (set.size() > 0) {
 			return set.iterator().next();
 		}

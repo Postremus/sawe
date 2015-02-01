@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.pro_crafting</groupId>
 	<artifactId>SaWe</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.2-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,15 +27,15 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldedit</artifactId>
+			<groupId>com.sk89q.worldedit</groupId>
+			<artifactId>worldedit-bukkit</artifactId>
 			<version>6.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldguard</artifactId>
-			<version>5.9</version>
+			<version>6.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

@@ -10,13 +10,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 public class SaWe extends JavaPlugin{
 	RegionListener regioListener;
 	
-	@Override
+	
 	public void onEnable() {
 		regioListener = new RegionListener(this);
 		this.getLogger().info("sagt Hallo");		
 	}
 	
-	@Override
+	
 	public void onDisable() {
 		HandlerList.unregisterAll(regioListener);
 		this.getLogger().info("sagt Bis Bald");
