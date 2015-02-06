@@ -15,6 +15,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.mask.RegionMask;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -89,10 +90,11 @@ public class RegionListener implements Listener {
 		}
 		we.getSession(player).setMask((Mask)null);
 		boolean allowWorldEdit = false;
-		if (rg.getMembers().contains(player.getUniqueId()) && player.hasPermission("sawe.use.member."+worldName)) {
+		LocalPlayer wePlayer = this.plugin.getWorldGuard().wrapPlayer(player);
+		if (rg.getMembers().contains(wePlayer) && player.hasPermission("sawe.use.member."+worldName)) {
 			allowWorldEdit = true;
 		}
-		else if (rg.getOwners().contains(player.getUniqueId()) && player.hasPermission("sawe.use.owner."+worldName)) {
+		else if (rg.getOwners().contains(wePlayer) && player.hasPermission("sawe.use.owner."+worldName)) {
 			allowWorldEdit = true;
 		}
 		if (allowWorldEdit) {
