@@ -10,7 +10,6 @@ import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -115,8 +114,11 @@ public class RegionListener implements Listener {
     private ProtectedRegion getRegionAt(Location loc) {
         RegionContainer rm = this.plugin.getWorldGuard().getRegionContainer();
         ApplicableRegionSet set = rm.get(loc.getWorld()).getApplicableRegions(BukkitUtil.toVector(loc));
-        if (set.size() > 0) {
-            return set.iterator().next();
+
+        for (ProtectedRegion protectedRegion : set) {
+            if (protectedRegion.getOwners().size() > 0 || protectedRegion.getMembers().size() > 0) {
+                return protectedRegion;
+            }
         }
         return null;
     }
