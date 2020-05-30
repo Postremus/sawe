@@ -1,27 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.pro-crafting</groupId>
+		<artifactId>pc-parent</artifactId>
+		<version>9</version>
+	</parent>
+
 	<groupId>de.pro_crafting</groupId>
 	<artifactId>SaWe</artifactId>
 	<version>0.2.3-SNAPSHOT</version>
 
+	<scm>
+		<connection>scm:git@github.com:pro-crafting/sawe.git</connection>
+		<url>https://github.com/pro-crafting/sawe</url>
+		<developerConnection>scm:git:git@github.com:pro-crafting/sawe.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 	<properties>
+		<!-- Dependency Versions -->
+		<version.worldguard>7.0.2</version.worldguard>
+		<version.worldedit>7.1.0</version.worldedit>
+		<version.spigot-api>1.14.4-R0.1-SNAPSHOT</version.spigot-api>
+		<!-- Plugin Versions -->
+		<version.maven-shade-plugin>3.2.1</version.maven-shade-plugin>
+		<version.sonar-maven-plugin>3.4.1.1168</version.sonar-maven-plugin>
+
+		<!-- Setting -->
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.number>-</project.build.number>
-		<project.build.version>${version} Build:${project.build.number}</project.build.version>
+		<sonar.organization>pro-crafting</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<repositories>
 		<repository>
-			<id>sk89q-repo</id>
-			<name>sk89q Repo</name>
-			<url>http://maven.sk89q.com/repo/</url>
-			<layout>default</layout>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
-
 		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public/</url>
+			<id>sk89q-repo</id>
+			<url>https://maven.enginehub.org/repo/</url>
 		</repository>
 	</repositories>
 
@@ -29,20 +51,21 @@
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>6.0.0-SNAPSHOT</version>
+			<version>${version.worldedit}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldguard</artifactId>
-			<version>6.0.0-SNAPSHOT</version>
+			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard-bukkit</artifactId>
+			<version>7.0.2</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.7.9-R0.1-SNAPSHOT</version>
-			<type>jar</type>
+			<version>${version.spigot-api}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
