@@ -1,7 +1,8 @@
 name: SaWe
-version: ${project.build.version}
+version: ${project.version}
 description: Worldedit in eigenen Worldguard Regionen nutzen
-website: 
+website: https://github.com/pro-crafting/sawe
 author: postremus
-main: de.pro_crafting.sawe.SaWe
+main: com.pro_crafting.mc.sawe.SaWe
 depend: [WorldEdit, WorldGuard]
+api-version: 1.15

@@ -8,9 +8,9 @@
 		<version>9</version>
 	</parent>
 
-	<groupId>de.pro_crafting</groupId>
+	<groupId>com.pro-crafting.mc</groupId>
 	<artifactId>SaWe</artifactId>
-	<version>0.2.3-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git@github.com:pro-crafting/sawe.git</connection>
@@ -47,6 +47,15 @@
 		</repository>
 	</repositories>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
@@ -57,8 +66,15 @@
 
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard-core</artifactId>
+			<version>${version.worldguard}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
-			<version>7.0.2</version>
+			<version>${version.worldguard}</version>
 			<scope>provided</scope>
 		</dependency>
 
