@@ -1,15 +1,20 @@
-package de.pro_crafting.sawe;
+package com.pro_crafting.mc.sawe;
 
 import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.mask.RegionMask;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
-import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -82,16 +87,17 @@ public class RegionListener implements Listener {
         String worldName = player.getWorld().getName().toLowerCase();
         LocalSession session = we.getSession(player);
         if (player.hasPermission("sawe.bypass." + worldName)) {
-            session.setMask((Mask) null);
+            session.setMask(null);
             return;
         }
         ProtectedRegion rg = getRegionAt(to);
+        session.setMask(null);
+
         if (rg == null) {
             return;
         }
-        session.setMask((Mask) null);
         boolean allowWorldEdit = false;
-        LocalPlayer wePlayer = this.plugin.getWorldGuard().wrapPlayer(player);
+        LocalPlayer wePlayer = this.plugin.getWorldGuardPlugin().wrapPlayer(player);
         if (rg.getMembers().contains(wePlayer) && player.hasPermission("sawe.use.member." + worldName)) {
             allowWorldEdit = true;
         } else if (rg.getOwners().contains(wePlayer) && player.hasPermission("sawe.use.owner." + worldName)) {
@@ -108,12 +114,14 @@ public class RegionListener implements Listener {
             command = command.replaceFirst("/", "");
         }
         command = command.toLowerCase();
-        return this.plugin.getWorldEdit().getWorldEdit().getPlatformManager().getCommandManager().getDispatcher().get(command) != null;
+        return this.plugin.getWorldEdit().getWorldEdit().getPlatformManager().getPlatformCommandManager().getCommandManager().getCommand(command).isPresent();
     }
 
     private ProtectedRegion getRegionAt(Location loc) {
-        RegionContainer rm = this.plugin.getWorldGuard().getRegionContainer();
-        ApplicableRegionSet set = rm.get(loc.getWorld()).getApplicableRegions(BukkitUtil.toVector(loc));
+        RegionContainer container = this.plugin.getWorldGuard().getPlatform().getRegionContainer();
+        RegionManager regionManager = container.get(BukkitAdapter.adapt(loc.getWorld()));
+
+        ApplicableRegionSet set = regionManager.getApplicableRegions(BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 
         for (ProtectedRegion protectedRegion : set) {
             if (protectedRegion.getOwners().size() > 0 || protectedRegion.getMembers().size() > 0) {
