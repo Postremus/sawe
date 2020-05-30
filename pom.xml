@@ -9,13 +9,13 @@
 
     <groupId>com.pro-crafting.mc</groupId>
     <artifactId>SaWe</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git@github.com:pro-crafting/sawe.git</connection>
         <url>https://github.com/pro-crafting/sawe</url>
         <developerConnection>scm:git:git@github.com:pro-crafting/sawe.git</developerConnection>
-        <tag>SaWe-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
